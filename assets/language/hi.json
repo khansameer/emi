@@ -1,0 +1,11 @@
+{
+  "appName": "EMI Calculation",
+  "login": "Login",
+  "sing_up": "Sign Up",
+  "forgot_password": "Forgot Password",
+  "email": "Email",
+  "password": "Password",
+  "error": "Error",
+  "userPWDWrongMsg": "Please enter username and password.",
+  "notValid": "Username and password is not valid."
+}
