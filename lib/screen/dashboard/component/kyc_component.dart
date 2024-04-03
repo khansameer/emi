@@ -26,9 +26,8 @@ class KycComponentState extends State<KycComponent> {
     return SizedBox(
       width: widget.size.width,
       child: Scaffold(
-        backgroundColor: Colors.red,
         body: Container(
-          color: Colors.red,
+          color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -71,7 +70,7 @@ class KycComponentState extends State<KycComponent> {
                       child: CommonButtonWidget(
                         radius: twentyFour,
                         top: widget.size.height * zero0024,
-                        width: widget.size.width * 0.4,
+                        width: widget.size.width * 0.3,
                         colorButton: Colors.white,
                         colorText: Colors.black,
                         colorBorder: Colors.black,

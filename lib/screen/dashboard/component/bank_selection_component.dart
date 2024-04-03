@@ -51,16 +51,11 @@ class BankSelectionComponentState extends State<BankSelectionComponent> {
     return SizedBox(
       child: Scaffold(
         bottomSheet: buttonView(),
-        body: Container(
-          decoration: BoxDecoration(
-              shape: BoxShape.circle, // BoxShape.circle or BoxShape.retangle
-              //color: const Color(0xFF66BB6A),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 5.0,
-                ),
-              ]),
+        body: Card(
+          elevation: 10,
+          color: Colors.white,
+          shadowColor: Colors.grey,
+          surfaceTintColor: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
