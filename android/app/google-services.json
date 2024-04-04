@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "368911668418",
+    "project_id": "emi-app-2dbd3",
+    "storage_bucket": "emi-app-2dbd3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368911668418:android:e3f469fdc4a65a6511d75b",
+        "android_client_info": {
+          "package_name": "com.sameer.emi_calculation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCs2WhsjJhzIHdg7rlfcCOyRHIDY_OMxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

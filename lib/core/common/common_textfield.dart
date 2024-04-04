@@ -96,7 +96,7 @@ class CommonTextField extends StatelessWidget {
       margin: margin ?? const EdgeInsets.only(left: zero, right: zero),
       child: TextFormField(
         validator: validator,
-        cursorColor: colorBlue,
+        cursorColor: colorWhite,
         readOnly: isReadOnly ?? false,
         maxLines: maxLines ?? 1,
         inputFormatters: inputFormatters ??
@@ -115,7 +115,7 @@ class CommonTextField extends StatelessWidget {
         style: TextStyle(
           fontFamily: fontFamily ?? fontPoppins,
           fontWeight: fontWeight ?? FontWeight.w400,
-          color: colorText ?? colorBlue,
+          color: colorText ?? colorWhite,
           fontSize: fontSize ?? fourteen,
         ),
         decoration: InputDecoration(

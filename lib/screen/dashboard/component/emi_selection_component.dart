@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:emi_calculation/core/common/common_button_widget.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:emi_calculation/screen/dashboard/model/emi_bean.dart';
+import 'package:emi_calculation/screen/dashboard/model/emi_model.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:emi_calculation/core/app_constants/app_constants.dart';
@@ -7,19 +10,19 @@ import 'package:emi_calculation/core/color/color_utils.dart';
 import 'package:emi_calculation/core/common/common_component.dart';
 import 'package:emi_calculation/core/common/common_text_widget.dart';
 
-class EmiData {
-  String? price;
-  String? month;
-  Color? color;
-  bool isSelected = false;
-
-  EmiData({this.price, this.month, this.color, required this.isSelected});
-}
-
 class EmiSelectionComponent extends StatefulWidget {
-  EmiSelectionComponent({super.key, required this.size, this.onTap});
+  EmiSelectionComponent({
+    super.key,
+    required this.size,
+    this.onTap,
+    required this.emiAmount,
+    required this.model,
+  });
   Size size;
   VoidCallback? onTap;
+
+  EMIModel model;
+  String emiAmount;
   @override
   State<StatefulWidget> createState() {
     return EmiSelectionComponentState();
@@ -27,34 +30,34 @@ class EmiSelectionComponent extends StatefulWidget {
 }
 
 class EmiSelectionComponentState extends State<EmiSelectionComponent> {
-  EmiData? selectedValue;
-  List<EmiData> projectType = [
-    EmiData(
-        price: "き 13,361",
-        month: "12 months",
-        isSelected: true,
-        color: Colors.red),
-    EmiData(
-        price: "ぎ 17,545",
-        month: "9 months",
-        isSelected: false,
-        color: Colors.green),
-    EmiData(
-        price: "ぎ 25,918/",
-        month: "6 months",
-        isSelected: false,
-        color: Colors.yellow),
-    EmiData(
-        price: "¥ 51,044/",
-        month: "3 months",
-        isSelected: false,
-        color: Colors.green)
-  ];
+  EMIBean? selectedValue;
+
+  List<EMIBean> loadEMIList = [];
+
+  void _handleCalculation(String volumeValue, EMIModel model) {
+    String emiResult = "";
+
+    double A = 0.0;
+    List<int> monthList = model.emiMonths ?? [];
+    int P = int.parse(volumeValue);
+    double r = double.parse('1.04') / 12 / 100;
+    for (int i = 0; i < monthList.length; i++) {
+      int n = monthList[i];
+      A = (P * r * pow((1 + r), n) / (pow((1 + r), n) - 1));
+      emiResult = A.toStringAsFixed(2);
+      loadEMIList.add(EMIBean(
+          amount: emiResult, month: '${monthList[i]}', isSelected: false));
+    }
+
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-
-    selectedValue = projectType.first;
+    _handleCalculation(widget.emiAmount, widget.model);
+    selectedValue = loadEMIList.first;
+    loadEMIList[0].isSelected = true;
   }
 
   @override
@@ -136,7 +139,7 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
       width: widget.size.width,
       height: widget.size.height * zero024,
       child: ListView.builder(
-          itemCount: projectType.length,
+          itemCount: loadEMIList.length,
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemBuilder: (context, index) {
@@ -144,10 +147,10 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
               behavior: HitTestBehavior.opaque,
               onTap: () {
                 setState(() {
-                  for (var element in projectType) {
+                  for (var element in loadEMIList) {
                     element.isSelected = false;
                   }
-                  projectType[index].isSelected = true;
+                  loadEMIList[index].isSelected = true;
                 });
               },
               child: Container(
@@ -161,7 +164,7 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    viewRadio(item: projectType[index]),
+                    viewRadio(item: loadEMIList[index]),
                     const SizedBox(
                       height: fourteen,
                     ),
@@ -170,7 +173,8 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
                         CommonTextWidget(
                           fontWeight: FontWeight.w700,
                           fontSize: sixteen,
-                          text: projectType[index].price,
+                          text:
+                              '${double.parse(loadEMIList[index].amount.toString()).round()}',
                         ),
                         CommonTextWidget(
                           fontWeight: FontWeight.w700,
@@ -181,7 +185,7 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
                     ),
                     CommonTextWidget(
                       fontWeight: FontWeight.w600,
-                      text: '${'for'.tr()} ${projectType[index].month}',
+                      text: '${'for'.tr()} ${loadEMIList[index].month}',
                     ),
                     CommonTextWidget(
                       top: twenty,
@@ -200,7 +204,7 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
     );
   }
 
-  viewRadio({required EmiData item}) {
+  viewRadio({required EMIBean item}) {
     return Container(
       margin: const EdgeInsets.all(ten),
       child: Row(

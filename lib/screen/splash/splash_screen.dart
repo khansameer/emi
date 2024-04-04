@@ -1,12 +1,11 @@
 import 'dart:async';
-
 import 'package:emi_calculation/core/color/color_utils.dart';
 import 'package:emi_calculation/core/common/common_component.dart';
+import 'package:emi_calculation/core/preference_helper.dart';
 import 'package:emi_calculation/screen/authentication/login/login_screen.dart';
 import 'package:emi_calculation/screen/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'component/splash_screen_component.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -26,11 +25,19 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   void gotoNextScreen() {
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardScreen()),
-          (route) => false);
+    Timer(const Duration(seconds: 3), () async {
+      if (await PreferenceHelper.getBool(key: PreferenceHelper.isLOGIN) ==
+          true) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const DashboardScreen()),
+            (route) => false);
+      } else {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+            (route) => false);
+      }
     });
   }
 

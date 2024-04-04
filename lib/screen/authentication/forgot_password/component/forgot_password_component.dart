@@ -1,4 +1,8 @@
+import 'package:emi_calculation/core/common/validator.dart';
+import 'package:emi_calculation/firebase/authentication_service.dart';
+import 'package:emi_calculation/firebase/firebase_exceptions.dart';
 import 'package:emi_calculation/screen/authentication/verification/verification_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:emi_calculation/screen/authentication/login/login_screen.dart';
@@ -19,7 +23,16 @@ class ForgotPasswordComponent extends StatefulWidget {
 }
 
 class ForgotPasswordComponentState extends State<ForgotPasswordComponent> {
-  GlobalKey<FormState> formKey = GlobalKey();
+  final key = GlobalKey<FormState>();
+  final tetEmail = TextEditingController();
+  final authService = AuthenticationService();
+  bool _isLoading = false;
+  @override
+  void dispose() {
+    tetEmail.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.sizeOf(context);
@@ -27,47 +40,87 @@ class ForgotPasswordComponentState extends State<ForgotPasswordComponent> {
       margin: const EdgeInsets.all(eighteen),
       width: size.width,
       height: size.height,
-      child: ListView(
+      child: Stack(
         children: [
-          signUpView(size: size),
+          ListView(
+            children: [
+              signUpView(size: size),
+            ],
+          ),
+          _isLoading ? showLoaderList() : const SizedBox.shrink(),
         ],
       ),
     );
   }
 
   signUpView({required Size size}) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CommonTextWidget(
-          fontSize: twenty,
-          fontWeight: FontWeight.w800,
-          text: 'forgot_password'.tr(),
-        ),
-        CommonTextWidget(
-          top: size.height * zero002,
-          textAlign: TextAlign.center,
-          text: 'forgot_password_desc'.tr(),
-        ),
-        commonTextField(
-          top: size.height * zero006,
-        ),
-        CommonButtonWidget(
-          colorButton: colorButtons,
-          onPressed: onClickReset,
-          left: size.width * zero001,
-          top: size.height * zero004,
-          right: size.width * zero001,
-          text: 'reset_password'.tr(),
-        ),
-      ],
+    return Form(
+      key: key,
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CommonTextWidget(
+            fontSize: twenty,
+            fontWeight: FontWeight.w800,
+            text: 'forgot_password'.tr(),
+          ),
+          CommonTextWidget(
+            top: size.height * zero002,
+            textAlign: TextAlign.center,
+            text: 'forgot_password_desc'.tr(),
+          ),
+          commonTextField(
+            keyboardType: TextInputType.emailAddress,
+            textCapitalization: TextCapitalization.none,
+            validator: (value) => Validator.validateEmail(value ?? ""),
+            controller: tetEmail,
+            top: size.height * zero006,
+          ),
+          CommonButtonWidget(
+            colorButton: colorButtons,
+            onPressed: onClickReset,
+            left: size.width * zero001,
+            top: size.height * zero004,
+            right: size.width * zero001,
+            text: 'reset_password'.tr(),
+          ),
+        ],
+      ),
     );
   }
 
-  onClickReset() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const VerificationScreen()));
+  onClickReset() async {
+    if (key.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      final status =
+          await authService.resetPassword(email: tetEmail.text.trim());
+      if (status == AuthStatus.successful) {
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+            (route) => false);
+        //Navigator.pushNamed(context, LoginScreen.id);
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        final error = AuthExceptionHandler.generateErrorMessage(status);
+
+        showMessageDialog(context: context, title: "error", content: error);
+      }
+    }
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: (context) => const VerificationScreen()));
+  }
+
+  void showErrorMsg({String? msg}) {
+    showMessageDialog(context: context, title: "Error", content: msg);
   }
 }

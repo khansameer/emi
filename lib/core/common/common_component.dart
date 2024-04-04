@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:emi_calculation/core/ModelTheme.dart';
 import 'package:emi_calculation/core/app_constants/app_constants.dart';
 import 'package:emi_calculation/core/color/color_utils.dart';
 import 'package:emi_calculation/core/common/common_button_widget.dart';
@@ -7,10 +6,8 @@ import 'package:emi_calculation/core/common/common_text_widget.dart';
 import 'package:emi_calculation/core/common/common_textfield.dart';
 import 'package:emi_calculation/core/image_path/image_path.dart';
 import 'package:emi_calculation/core/string_utils/string_utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 commonSetAssetImage(
     {String? image, Color? color, double? width, double? height}) {
@@ -36,14 +33,31 @@ AppBar commonAppBar({String? title, List<Widget>? actions, Color? colorText}) {
   );
 }
 
+Widget showLoaderList() {
+  return Center(
+    child: Container(
+        decoration: BoxDecoration(
+            color: colorButtons.withOpacity(0.50),
+            borderRadius: BorderRadius.circular(thirteen)),
+        padding: const EdgeInsets.all(twenty),
+        child: const CircularProgressIndicator(
+          color: colorWhite,
+          strokeWidth: 2.0,
+        )),
+  );
+}
+
 Widget commonTextField(
     {String? title,
     String? hint,
     bool? isPassword,
     double? top,
     bool? obscureText,
+    TextInputType? keyboardType,
     TextEditingController? controller,
     Widget? suffixIcon,
+    int? textInputLength,
+    TextCapitalization? textCapitalization,
     EdgeInsetsGeometry? margin,
     String? Function(String?)? validator}) {
   return Container(
@@ -62,11 +76,13 @@ Widget commonTextField(
           borderColor: colorWhite,
           controller: controller,
           validator: validator,
+          textInputLength: textInputLength,
+          textCapitalization: textCapitalization,
           obscureText: isPassword == true ? obscureText : false,
           suffixIcon: isPassword == true ? suffixIcon : null,
           inputTypes: isPassword == true
               ? TextInputType.visiblePassword
-              : TextInputType.emailAddress,
+              : keyboardType ?? TextInputType.emailAddress,
           hint: hint ?? "example@gmail.com",
         ),
       ],

@@ -1,0 +1,25 @@
+{
+  "name": "vilash",
+  "maxLoan": 500000,
+  "recommendedLoan": 150000,
+  "minLoan": 10000,
+  "emiMonths": [
+    12,
+    9,
+    6,
+    3
+  ],
+  "interestRate": 1.04,
+  "banks": [
+    {
+      "name": "HDFC Bank",
+      "iconPath": "assets/icons/ic_hdfc_bank.jpg",
+      "accountNo": "8382273727172"
+    },
+    {
+      "name": "ICICI Bank",
+      "iconPath": "assets/icons/ic_icici_bank.jpeg",
+      "accountNo": "6216712727461"
+    }
+  ]
+}

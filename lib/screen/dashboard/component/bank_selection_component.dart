@@ -4,6 +4,7 @@ import 'package:emi_calculation/core/color/color_utils.dart';
 import 'package:emi_calculation/core/common/common_button_widget.dart';
 import 'package:emi_calculation/core/common/common_component.dart';
 import 'package:emi_calculation/core/common/common_text_widget.dart';
+import 'package:emi_calculation/screen/dashboard/model/emi_model.dart';
 import 'package:flutter/material.dart';
 
 class EmiData {
@@ -16,9 +17,16 @@ class EmiData {
 }
 
 class BankSelectionComponent extends StatefulWidget {
-  BankSelectionComponent({super.key, required this.size, this.onTap});
+  BankSelectionComponent({
+    super.key,
+    required this.size,
+    required this.model,
+    this.onTap,
+  });
   Size size;
+  EMIModel model;
   VoidCallback? onTap;
+
   @override
   State<StatefulWidget> createState() {
     return BankSelectionComponentState();
@@ -26,24 +34,13 @@ class BankSelectionComponent extends StatefulWidget {
 }
 
 class BankSelectionComponentState extends State<BankSelectionComponent> {
-  EmiData? selectedValue;
-  List<EmiData> projectType = [
-    EmiData(
-        price: "HDFC Bank",
-        month: "8382273727172",
-        isSelected: true,
-        color: Colors.red),
-    EmiData(
-        price: "ICICI Bank",
-        month: "6216712727461",
-        isSelected: false,
-        color: Colors.green),
-  ];
+  Banks? selectedValue;
+
   @override
   void initState() {
     super.initState();
 
-    selectedValue = projectType.first;
+    selectedValue = widget.model.banks?.first;
   }
 
   @override
@@ -109,80 +106,36 @@ class BankSelectionComponentState extends State<BankSelectionComponent> {
     return SizedBox(
       width: widget.size.width,
       child: ListView.builder(
-          itemCount: projectType.length,
+          itemCount: widget.model.banks?.length,
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemBuilder: (context, index) {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
+                var bank = widget.model.banks ?? [];
                 setState(() {
-                  for (var element in projectType) {
+                  for (var element in bank) {
                     element.isSelected = false;
                   }
-                  projectType[index].isSelected = true;
+                  widget.model.banks?[index].isSelected = true;
                 });
               },
               child: ListTile(
-                trailing: viewRadio(item: projectType[index]),
-                leading: Icon(Icons.add_card_outlined),
+                trailing: viewRadio(item: widget.model.banks![index]),
+                leading: Image.asset('${widget.model.banks?[index].iconPath}'),
                 title: CommonTextWidget(
                   fontWeight: FontWeight.w600,
                   fontSize: sixteen,
                   textColor: Colors.black,
-                  text: projectType[index].price,
+                  text: widget.model.banks?[index].name,
                 ),
                 subtitle: CommonTextWidget(
                   fontSize: sixteen,
                   textColor: Colors.black,
-                  text: projectType[index].month,
+                  text: widget.model.banks?[index].accountNo,
                 ),
-              ) /*Container(
-                decoration: BoxDecoration(
-                    color: (index % 2 == 0) ? Colors.red : Colors.green,
-                    borderRadius: BorderRadius.circular(ten)),
-                width: widget.size.width * zero04,
-                margin: const EdgeInsets.all(ten),
-                padding: const EdgeInsets.all(ten),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    viewRadio(item: projectType[index]),
-                    const SizedBox(
-                      height: fourteen,
-                    ),
-                    Row(
-                      children: [
-                        CommonTextWidget(
-                          fontWeight: FontWeight.w700,
-                          fontSize: sixteen,
-                          text: projectType[index].price,
-                        ),
-                        CommonTextWidget(
-                          fontWeight: FontWeight.w700,
-                          fontSize: sixteen,
-                          text: 'mo'.tr(),
-                        ),
-                      ],
-                    ),
-                    CommonTextWidget(
-                      fontWeight: FontWeight.w600,
-                      text: '${'for'.tr()} ${projectType[index].month}',
-                    ),
-                    CommonTextWidget(
-                      top: twenty,
-                      fontWeight: FontWeight.w600,
-                      text: 'see_calculations'.tr(),
-                      decorationThickness: two,
-                      decorationStyle: TextDecorationStyle.dashed,
-                      decorationColor: Colors.transparent,
-                      textDecoration: TextDecoration.underline,
-                    ),
-                  ],
-                ),
-              )*/
-              ,
+              ),
             );
           }),
     );
@@ -207,7 +160,7 @@ class BankSelectionComponentState extends State<BankSelectionComponent> {
     );
   }
 
-  viewRadio({required EmiData item}) {
+  viewRadio({required Banks item}) {
     return Container(
       margin: const EdgeInsets.all(ten),
       child: Row(
