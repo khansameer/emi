@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceHelper {
   static const String isLOGIN = "is_login";
+  static const String languageType = "languageType";
+  static const String isTheme = "Themes_key";
   static SharedPreferences? prefs;
   /*------------------------------------Store Data----------------------------------------*/
 

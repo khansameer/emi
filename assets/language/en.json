@@ -42,9 +42,27 @@
     "change_account": "Change Account",
     "kyc_completed": "KYC completed",
     "kyc_completed_desc": "Amount credited. Please check your account.",
-    "done": "Done"
-
-
-
+    "done": "Done",
+    "how_much": " how much money do you need?",
+    "amount_need": " move the dial and set any amount you need upto?",
+    "monthly": "monthly",
+    "delivered": "cstash is instant. money will be delivered\nwithin seconds",
+    "emi": "EMI",
+    "duration": "Duration",
+    "month": "Month",
+    "recommended": "recommended",
+    "email_error_msg": "Please enter a valid email address.",
+    "password_error_msg": "Password must be 10 digits",
+    "empty_name": "Please enter full name",
+    "empty_error_name": "Please enter valid full name",
+    "password_not_match": "Password and Confirm password not match.",
+    "empty_password": "Please enter password.",
+    "empty_confirm_password": "Please enter confirm password.",
+    "password_valid_msg": "Password must contain at least 5 characters,including\nUPPER/lowercase and special characters.",
+    "check_email": "Check your Email",
+    "check_email_desc": "We have sent you a Email on ",
+    "verifying_email": "Verifying email....",
+    "resend": "Resend",
+    "email_verify_msg": "Email is not verified."
 
 }

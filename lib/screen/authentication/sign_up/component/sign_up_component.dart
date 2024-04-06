@@ -98,7 +98,16 @@ class SignUpComponentState extends State<SignUpComponent> {
               commonTextField(
                   controller: tetPassword,
                   textInputLength: 30,
-                  validator: (value) => Validator.validatePassword(value ?? ""),
+                  validator: (value) {
+                    if (value.toString().trim().isEmpty) {
+                      return 'empty_password'.tr();
+                    }
+
+                    if (!Validator.validatePassword(value.toString())) {
+                      return 'password_valid_msg'.tr();
+                    }
+                    return null;
+                  },
                   top: size.height * zero002,
                   suffixIcon: commonInkWell(
                       child: !obscureText
@@ -119,7 +128,20 @@ class SignUpComponentState extends State<SignUpComponent> {
                   textInputLength: 30,
                   controller: tetConfirmPassword,
                   top: size.height * zero002,
-                  validator: (value) => Validator.validatePassword(value ?? ""),
+                  validator: (value) {
+                    if (value.toString().trim().isEmpty) {
+                      return 'empty_confirm_password'.tr();
+                    }
+
+                    if (!Validator.validatePassword(value.toString())) {
+                      return 'password_valid_msg'.tr();
+                    }
+                    if (!tetPassword.text.contains(value.toString())) {
+                      return 'password_not_match'.tr();
+                    }
+                    return null;
+                    //  Validator.validatePassword(value ?? "");
+                  },
                   suffixIcon: commonInkWell(
                       child: !obscureConfirmText
                           ? commonIcon(

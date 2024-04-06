@@ -7,14 +7,7 @@ import 'package:emi_calculation/core/common/common_text_widget.dart';
 import 'package:emi_calculation/screen/dashboard/model/emi_model.dart';
 import 'package:flutter/material.dart';
 
-class EmiData {
-  String? price;
-  String? month;
-  Color? color;
-  bool isSelected = false;
-
-  EmiData({this.price, this.month, this.color, required this.isSelected});
-}
+import 'kyc_component.dart';
 
 class BankSelectionComponent extends StatefulWidget {
   BankSelectionComponent({
@@ -36,49 +29,97 @@ class BankSelectionComponent extends StatefulWidget {
 class BankSelectionComponentState extends State<BankSelectionComponent> {
   Banks? selectedValue;
 
+  bool _isClick = false;
+  String? bankName;
+  String? bankIcon;
+  String? accountNo;
+
   @override
   void initState() {
     super.initState();
-
+    widget.model.banks?[0].isSelected = true;
+    bankName = widget.model.banks?[0].name;
+    bankIcon = widget.model.banks?[0].iconPath;
+    accountNo = widget.model.banks?[0].accountNo;
+    // month = loadEMIList[0].month;
     selectedValue = widget.model.banks?.first;
+  }
+
+  getValue(value) {
+    setState(() {
+      _isClick = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       child: Scaffold(
-        bottomSheet: buttonView(),
+        bottomSheet: buttonView(size: widget.size),
         body: Card(
-          elevation: 10,
-          color: Colors.white,
-          shadowColor: Colors.grey,
-          surfaceTintColor: Colors.white,
+          elevation: 0,
+          color: Colors.transparent,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: widget.size.height * zero0040,
-              ),
               Padding(
                 padding: const EdgeInsets.only(left: fifteen, right: fifteen),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonTextWidget(
-                      textColor: Colors.black,
-                      fontSize: eighteen,
-                      fontWeight: FontWeight.w600,
-                      text: 'bank_title'.tr(),
-                    ),
-                    CommonTextWidget(
-                      top: five,
-                      fontWeight: FontWeight.w500,
-                      textColor: Colors.grey,
-                      text: 'bank_title_desc'.tr(),
-                    ),
+                    _isClick
+                        ? ListTile(
+                            title: CommonTextWidget(
+                              fontWeight: FontWeight.w500,
+                              textColor: Colors.grey,
+                              text: bankName,
+                            ),
+                            leading: Image.asset('$bankIcon'),
+                            trailing: IconButton(
+                              onPressed: () {
+                                setState(() {});
+                                _isClick = false;
+                                Navigator.of(context).pop();
+                              },
+                              icon: const RotatedBox(
+                                quarterTurns: 1,
+                                child: Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                            subtitle: CommonTextWidget(
+                              top: five,
+                              fontWeight: FontWeight.w800,
+                              textColor: Colors.black,
+                              text: accountNo,
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CommonTextWidget(
+                                  textColor: Colors.black,
+                                  fontSize: eighteen,
+                                  fontWeight: FontWeight.w600,
+                                  text: 'bank_title'.tr(),
+                                ),
+                                CommonTextWidget(
+                                  top: five,
+                                  fontWeight: FontWeight.w500,
+                                  textColor: Colors.grey,
+                                  text: 'bank_title_desc'.tr(),
+                                ),
+                              ],
+                            ),
+                          ),
                     SizedBox(
                       height: widget.size.height * zero0024,
                     ),
@@ -119,6 +160,9 @@ class BankSelectionComponentState extends State<BankSelectionComponent> {
                     element.isSelected = false;
                   }
                   widget.model.banks?[index].isSelected = true;
+                  bankIcon = widget.model.banks?[index].iconPath;
+                  accountNo = widget.model.banks?[index].accountNo;
+                  bankName = widget.model.banks?[index].name;
                 });
               },
               child: ListTile(
@@ -141,14 +185,32 @@ class BankSelectionComponentState extends State<BankSelectionComponent> {
     );
   }
 
-  buttonView() {
+  buttonView({required Size size}) {
     return commonInkWell(
-      onTap: widget.onTap,
+      onTap: () {
+        setState(() {
+          _isClick = true;
+        });
+        showModalBottomSheetDialog(
+            context: context,
+            size: size,
+            onClose: getValue,
+            widget: SizedBox(
+              width: size.width,
+              height: size.height * 0.6,
+              child: KycComponent(
+                size: size,
+                function: getValue,
+                onTap: () {},
+              ),
+            ));
+      },
       child: Container(
         height: ninety,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             color: colorButtons,
-            borderRadius: BorderRadius.circular(twentyFive)),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         child: Center(
           child: CommonTextWidget(
             text: 'btn_kyc'.tr(),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:emi_calculation/core/app_constants/app_constants.dart';
 import 'package:emi_calculation/core/common/common_button_widget.dart';
 import 'package:emi_calculation/core/common/common_component.dart';
@@ -9,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
-  const EmailVerificationScreen({Key? key}) : super(key: key);
+  const EmailVerificationScreen({super.key});
 
   @override
   State<EmailVerificationScreen> createState() =>
@@ -69,7 +70,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 Center(
                   child: CommonTextWidget(
                     textAlign: TextAlign.center,
-                    text: 'Check your Email',
+                    text: 'check_email'.tr(),
                     fontSize: twenty,
                     fontWeight: FontWeight.w600,
                   ),
@@ -78,7 +79,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   textAlign: TextAlign.center,
                   top: size.height * 0.020,
                   text:
-                      'We have sent you a Email on  ${auth.currentUser?.email}',
+                      '${'check_email_desc'.tr()}  ${auth.currentUser?.email}',
                   textColor: Colors.white,
                 ),
                 SizedBox(
@@ -91,14 +92,14 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   height: size.height * 0.040,
                 ),
                 CommonTextWidget(
-                  text: 'Verifying email....',
+                  text: 'verifying_email'.tr(),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(
                   height: size.height * 0.040,
                 ),
                 CommonButtonWidget(
-                  text: 'Resend',
+                  text: 'resend'.tr(),
                   width: size.width * 0.5,
                   onPressed: () {
                     try {

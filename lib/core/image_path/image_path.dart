@@ -3,3 +3,7 @@ const String icLogOut = "assets/icons/ic_logout.png";
 const String icDone = "assets/icons/ic_done.png";
 const String icICICIBank = "assets/icons/ic_icici_bank.jpeg";
 const String icHDFC = "assets/icons/ic_hdfc_bank.jpg";
+const String icLanguage = "assets/icons/ic_language.png";
+const String icThemes = "assets/icons/ic_thems.png";
+const String icHindi = "assets/icons/ic_hindi.png";
+const String icEnglish = "assets/icons/ic_english.png";

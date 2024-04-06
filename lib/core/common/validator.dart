@@ -1,29 +1,30 @@
+import 'package:easy_localization/easy_localization.dart';
+
 class Validator {
   static String? validateEmail(String value) {
     Pattern pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
     RegExp regex = RegExp(pattern as String);
     if (!regex.hasMatch(value)) {
-      return '🚩 Please enter a valid email address.';
+      return '🚩 ${'email_error_msg'.tr()}';
     } else {
       return null;
     }
   }
 
-  static String? validatePassword(String value) {
-    if (value.length != 6) {
-      return '🚩 Password must be 6 digits';
-    } else {
-      return null;
-    }
+  static bool validatePassword(String value) {
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{5,}$';
+    RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(value);
   }
 
   static String? fullNameValidate(String fullName) {
     String patttern = r'^[a-z A-Z,.\-]+$';
     RegExp regExp = RegExp(patttern);
     if (fullName.isEmpty) {
-      return 'Please enter full name';
+      return 'empty_name'.tr();
     } else if (!regExp.hasMatch(fullName)) {
-      return 'Please enter valid full name';
+      return 'empty_error_name'.tr();
     }
     return null;
   }

@@ -5,9 +5,20 @@ import 'package:emi_calculation/core/common/common_button_widget.dart';
 import 'package:emi_calculation/core/common/common_text_widget.dart';
 import 'package:emi_calculation/core/common/common_textfield.dart';
 import 'package:emi_calculation/core/image_path/image_path.dart';
+import 'package:emi_calculation/core/preference_helper.dart';
 import 'package:emi_calculation/core/string_utils/string_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+bool _getTheme = false;
+saveLanguage({String? language}) {
+  PreferenceHelper.setString(
+      key: PreferenceHelper.languageType, value: language.toString());
+}
+
+saveTheme({required bool value}) {
+  PreferenceHelper.setBool(key: PreferenceHelper.isTheme, value: value);
+}
 
 commonSetAssetImage(
     {String? image, Color? color, double? width, double? height}) {
@@ -103,11 +114,17 @@ Widget commonInkWell({
 }
 
 Widget commonIcon({IconData? icon, Color? color, double? size}) {
+  print('==========gett${getTheme()}');
   return Icon(
     icon ?? Icons.visibility,
-    color: color ?? colorBlue,
+    color: _getTheme == true ? Colors.black : Colors.white,
     size: size ?? twenty,
   );
+}
+
+Future<bool> getTheme() async {
+  _getTheme = await PreferenceHelper.getBool(key: PreferenceHelper.isTheme);
+  return _getTheme;
 }
 
 Widget commonBgView(
@@ -196,6 +213,7 @@ void showModalBottomSheetDialog(
     {required BuildContext context,
     required Size size,
     Widget? widget,
+    required Function onClose,
     Color? barrierColor,
     Color? backgroundColor}) {
   showModalBottomSheet<void>(
@@ -218,5 +236,8 @@ void showModalBottomSheetDialog(
     builder: (BuildContext context) {
       return widget ?? Container();
     },
-  );
+  ).then((value) {
+    onClose(false);
+    print('========Close');
+  });
 }

@@ -166,6 +166,7 @@ class LoginComponentState extends State<LoginComponent> {
         email: tetEmail.text.trim(),
         password: tetPassword.text,
       );
+
       if (status == AuthStatus.successful) {
         setState(() {
           _isLoading = false;
@@ -178,8 +179,17 @@ class LoginComponentState extends State<LoginComponent> {
         setState(() {
           _isLoading = false;
         });
-        final error = AuthExceptionHandler.generateErrorMessage(status);
-        showMessageDialog(context: context, title: "Error", content: error);
+
+        if (status == AuthStatus.unknown) {
+          showMessageDialog(
+              context: context,
+              title: 'error'.tr(),
+              content: 'email_verify_msg'.tr());
+        } else {
+          final error = AuthExceptionHandler.generateErrorMessage(status);
+          showMessageDialog(
+              context: context, title: 'error'.tr(), content: error);
+        }
       }
     }
   }

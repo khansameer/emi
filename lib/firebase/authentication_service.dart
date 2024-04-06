@@ -12,6 +12,24 @@ class AuthenticationService {
   }) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
+      if (auth.currentUser?.emailVerified == true) {
+        _status = AuthStatus.successful;
+      } else {
+        _status = AuthStatus.unknown;
+        //Not verified
+      }
+    } on FirebaseAuthException catch (e) {
+      _status = AuthExceptionHandler.handleAuthException(e);
+    }
+    return _status;
+  }
+
+  Future<AuthStatus> checkVerified({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await auth.signInWithEmailAndPassword(email: email, password: password);
       _status = AuthStatus.successful;
     } on FirebaseAuthException catch (e) {
       _status = AuthExceptionHandler.handleAuthException(e);

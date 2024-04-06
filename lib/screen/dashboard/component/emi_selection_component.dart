@@ -1,14 +1,18 @@
 import 'dart:math';
 
 import 'package:emi_calculation/core/common/common_button_widget.dart';
+import 'package:emi_calculation/screen/dashboard/component/bank_selection_component.dart';
+import 'package:emi_calculation/screen/dashboard/component/kyc_component.dart';
 import 'package:emi_calculation/screen/dashboard/model/emi_bean.dart';
 import 'package:emi_calculation/screen/dashboard/model/emi_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:emi_calculation/core/app_constants/app_constants.dart';
 import 'package:emi_calculation/core/color/color_utils.dart';
 import 'package:emi_calculation/core/common/common_component.dart';
 import 'package:emi_calculation/core/common/common_text_widget.dart';
+import 'package:flutter/widgets.dart';
 
 class EmiSelectionComponent extends StatefulWidget {
   EmiSelectionComponent({
@@ -32,7 +36,15 @@ class EmiSelectionComponent extends StatefulWidget {
 class EmiSelectionComponentState extends State<EmiSelectionComponent> {
   EMIBean? selectedValue;
 
+  bool _isClick = false;
+  String? amount;
+  String? month;
   List<EMIBean> loadEMIList = [];
+  getValue(value) {
+    setState(() {
+      _isClick = false;
+    });
+  }
 
   void _handleCalculation(String volumeValue, EMIModel model) {
     String emiResult = "";
@@ -58,6 +70,8 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
     _handleCalculation(widget.emiAmount, widget.model);
     selectedValue = loadEMIList.first;
     loadEMIList[0].isSelected = true;
+    amount = loadEMIList[0].amount;
+    month = loadEMIList[0].month;
   }
 
   @override
@@ -66,48 +80,112 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
       height: widget.size.height * zero08,
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        bottomSheet: buttonView(),
+        bottomSheet: buttonView(size: widget.size, model: widget.model),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: widget.size.height * zero0040,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: fifteen, right: fifteen),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CommonTextWidget(
-                    textColor: Colors.black,
-                    fontSize: eighteen,
-                    fontWeight: FontWeight.w600,
-                    text: 'emi_title'.tr(),
-                  ),
-                  CommonTextWidget(
-                    top: five,
-                    fontWeight: FontWeight.w500,
-                    textColor: Colors.grey,
-                    text: 'emi_desc'.tr(),
-                  ),
-                  SizedBox(
-                    height: widget.size.height * zero0024,
-                  ),
-                  listview(),
-                  CommonButtonWidget(
-                    radius: twentyFour,
-                    top: widget.size.height * zero0024,
-                    width: widget.size.width * zero05,
-                    colorButton: Colors.white,
-                    colorText: Colors.black,
-                    colorBorder: Colors.black,
-                    text: 'create_plan'.tr(),
-                  )
-                ],
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _isClick
+                    ? Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CommonTextWidget(
+                                  fontWeight: FontWeight.w500,
+                                  textColor: Colors.grey,
+                                  text: 'emi'.tr(),
+                                ),
+                                CommonTextWidget(
+                                  fontWeight: FontWeight.w600,
+                                  textColor: Colors.black,
+                                  fontSize: 16,
+                                  text:
+                                      '${double.parse(amount.toString()).round()}',
+                                )
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                CommonTextWidget(
+                                  fontWeight: FontWeight.w500,
+                                  textColor: Colors.grey,
+                                  text: 'duration'.tr(),
+                                ),
+                                CommonTextWidget(
+                                  fontWeight: FontWeight.w600,
+                                  textColor: Colors.black,
+                                  text: '$month Month',
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {});
+                                    _isClick = false;
+                                    Navigator.of(context).pop();
+                                  },
+                                  icon: const RotatedBox(
+                                    quarterTurns: 1,
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: 20,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CommonTextWidget(
+                              textColor: Colors.black,
+                              fontSize: eighteen,
+                              fontWeight: FontWeight.w600,
+                              text: 'emi_title'.tr(),
+                            ),
+                            CommonTextWidget(
+                              top: five,
+                              fontWeight: FontWeight.w500,
+                              textColor: Colors.grey,
+                              text: 'emi_desc'.tr(),
+                            ),
+                          ],
+                        ),
+                      ),
+                SizedBox(
+                  height: widget.size.height * zero0024,
+                ),
+                listview(),
+                CommonButtonWidget(
+                  radius: twentyFour,
+                  left: ten,
+                  top: widget.size.height * zero0024,
+                  width: widget.size.width * zero05,
+                  colorButton: Colors.white,
+                  colorText: Colors.black,
+                  colorBorder: Colors.black,
+                  text: 'create_plan'.tr(),
+                )
+              ],
             )
           ],
         ),
@@ -115,14 +193,31 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
     );
   }
 
-  buttonView() {
+  buttonView({required Size size, required EMIModel model}) {
     return commonInkWell(
-      onTap: widget.onTap,
+      onTap: () {
+        setState(() {});
+        _isClick = true;
+
+        showModalBottomSheetDialog(
+            context: context,
+            size: size,
+            onClose: getValue,
+            widget: SizedBox(
+              height: size.height * 0.7,
+              child: BankSelectionComponent(
+                size: size,
+                model: model,
+                onTap: () {},
+              ),
+            ));
+      },
       child: Container(
         height: ninety,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             color: colorButtons,
-            borderRadius: BorderRadius.circular(twentyFive)),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         child: Center(
           child: CommonTextWidget(
             text: 'select_bank'.tr(),
@@ -151,53 +246,93 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
                     element.isSelected = false;
                   }
                   loadEMIList[index].isSelected = true;
+                  setState(() {});
+                  amount = '${loadEMIList[index].amount}';
+                  month = '${loadEMIList[index].month}';
                 });
               },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: (index % 2 == 0) ? Colors.red : Colors.green,
-                    borderRadius: BorderRadius.circular(ten)),
-                width: widget.size.width * zero04,
-                margin: const EdgeInsets.all(ten),
-                padding: const EdgeInsets.all(ten),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    viewRadio(item: loadEMIList[index]),
-                    const SizedBox(
-                      height: fourteen,
-                    ),
-                    Row(
+              child: Stack(
+                clipBehavior: Clip.hardEdge,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: index == 0
+                            ? Colors.green
+                            : index == 1
+                                ? Colors.blue
+                                : index == 2
+                                    ? Colors.orange
+                                    : index == 3
+                                        ? Colors.pinkAccent
+                                        : Colors.green,
+                        borderRadius: BorderRadius.circular(ten)),
+                    width: widget.size.width * zero04,
+                    margin: const EdgeInsets.all(ten),
+                    padding: const EdgeInsets.all(ten),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CommonTextWidget(
-                          fontWeight: FontWeight.w700,
-                          fontSize: sixteen,
-                          text:
-                              '${double.parse(loadEMIList[index].amount.toString()).round()}',
+                        const SizedBox(
+                          height: fourteen,
+                        ),
+                        viewRadio(item: loadEMIList[index]),
+                        const SizedBox(
+                          height: fourteen,
+                        ),
+                        Row(
+                          children: [
+                            CommonTextWidget(
+                              fontWeight: FontWeight.w700,
+                              fontSize: sixteen,
+                              text:
+                                  '${double.parse(loadEMIList[index].amount.toString()).round()}',
+                            ),
+                            CommonTextWidget(
+                              fontWeight: FontWeight.w700,
+                              fontSize: sixteen,
+                              text: 'mo'.tr(),
+                            ),
+                          ],
                         ),
                         CommonTextWidget(
-                          fontWeight: FontWeight.w700,
-                          fontSize: sixteen,
-                          text: 'mo'.tr(),
+                          fontWeight: FontWeight.w600,
+                          text:
+                              '${'for'.tr()} ${loadEMIList[index].month} ${'month'.tr()}',
+                        ),
+                        CommonTextWidget(
+                          top: twenty,
+                          fontWeight: FontWeight.w600,
+                          text: 'see_calculations'.tr(),
+                          decorationThickness: two,
+                          decorationStyle: TextDecorationStyle.dashed,
+                          decorationColor: Colors.transparent,
+                          textDecoration: TextDecoration.underline,
                         ),
                       ],
                     ),
-                    CommonTextWidget(
-                      fontWeight: FontWeight.w600,
-                      text: '${'for'.tr()} ${loadEMIList[index].month}',
-                    ),
-                    CommonTextWidget(
-                      top: twenty,
-                      fontWeight: FontWeight.w600,
-                      text: 'see_calculations'.tr(),
-                      decorationThickness: two,
-                      decorationStyle: TextDecorationStyle.dashed,
-                      decorationColor: Colors.transparent,
-                      textDecoration: TextDecoration.underline,
-                    ),
-                  ],
-                ),
+                  ),
+                  index == 0
+                      ? Positioned(
+                          right: 8,
+                          top: 0,
+                          left: 8,
+                          child: Container(
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            padding: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                                color: colorApp,
+                                borderRadius: BorderRadius.circular(10)),
+                            width: widget.size.width * zero04,
+                            alignment: Alignment.center,
+                            child: Center(
+                              child: CommonTextWidget(
+                                text: 'recommended'.tr(),
+                              ),
+                            ),
+                          ))
+                      : const SizedBox.shrink(),
+                ],
               ),
             );
           }),
