@@ -40,7 +40,6 @@ class DefaultFirebaseOptions {
   );
   static const FirebaseOptions ios = FirebaseOptions(
     iosBundleId: 'com.sameer.emicalculation',
-    //iosClientId: '480746930279-2rvmvdtb4499gt56teddeidmivbalsbt.apps.googleusercontent.com',
     apiKey: 'AIzaSyBg8eehU3fkBO4-pB6dIfE4f-cgAl-MC6o',
     appId: '1:480746930279:ios:b3d413b247ad1d13aa94c2',
     messagingSenderId: '368911668418',

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import 'kyc_component.dart';
 
+//ignore: must_be_immutable
 class BankSelectionComponent extends StatefulWidget {
   BankSelectionComponent({
     super.key,
@@ -41,7 +42,7 @@ class BankSelectionComponentState extends State<BankSelectionComponent> {
     bankName = widget.model.banks?[0].name;
     bankIcon = widget.model.banks?[0].iconPath;
     accountNo = widget.model.banks?[0].accountNo;
-    // month = loadEMIList[0].month;
+
     selectedValue = widget.model.banks?.first;
   }
 
@@ -64,77 +65,87 @@ class BankSelectionComponentState extends State<BankSelectionComponent> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: fifteen, right: fifteen),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _isClick
-                        ? ListTile(
-                            title: CommonTextWidget(
-                              fontWeight: FontWeight.w500,
-                              textColor: Colors.grey,
-                              text: bankName,
-                            ),
-                            leading: Image.asset('$bankIcon'),
-                            trailing: IconButton(
-                              onPressed: () {
-                                setState(() {});
-                                _isClick = false;
-                                Navigator.of(context).pop();
-                              },
-                              icon: const RotatedBox(
-                                quarterTurns: 1,
-                                child: Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 20,
-                                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _isClick
+                      ? ListTile(
+                          contentPadding:
+                              EdgeInsets.only(right: ten, left: ten),
+                          title: CommonTextWidget(
+                            fontWeight: FontWeight.w500,
+                            textColor: Colors.grey,
+                            text: bankName,
+                          ),
+                          leading: Image.asset('$bankIcon'),
+                          trailing: IconButton(
+                            onPressed: () {
+                              setState(() {});
+                              _isClick = false;
+                              Navigator.of(context).pop();
+                            },
+                            icon: const RotatedBox(
+                              quarterTurns: 1,
+                              child: Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 20,
                               ),
                             ),
-                            subtitle: CommonTextWidget(
-                              top: five,
-                              fontWeight: FontWeight.w800,
-                              textColor: Colors.black,
-                              text: accountNo,
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CommonTextWidget(
-                                  textColor: Colors.black,
+                          ),
+                          subtitle: CommonTextWidget(
+                            top: five,
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
                                   fontSize: eighteen,
                                   fontWeight: FontWeight.w600,
-                                  text: 'bank_title'.tr(),
                                 ),
-                                CommonTextWidget(
-                                  top: five,
-                                  fontWeight: FontWeight.w500,
-                                  textColor: Colors.grey,
-                                  text: 'bank_title_desc'.tr(),
-                                ),
-                              ],
-                            ),
+                            fontWeight: FontWeight.w800,
+                            textColor: Colors.black,
+                            text: accountNo,
                           ),
-                    SizedBox(
-                      height: widget.size.height * zero0024,
-                    ),
-                    listview(),
-                    CommonButtonWidget(
-                      radius: twentyFour,
-                      top: widget.size.height * zero0024,
-                      width: widget.size.width * zero05,
-                      colorButton: Colors.white,
-                      colorText: Colors.black,
-                      colorBorder: Colors.black,
-                      text: 'change_account'.tr(),
-                    )
-                  ],
-                ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CommonTextWidget(
+                                textStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontSize: eighteen,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                text: 'bank_title'.tr(),
+                              ),
+                              CommonTextWidget(
+                                top: five,
+                                fontWeight: FontWeight.w500,
+                                textColor: Colors.grey,
+                                text: 'bank_title_desc'.tr(),
+                              ),
+                            ],
+                          ),
+                        ),
+                  SizedBox(
+                    height: widget.size.height * zero0024,
+                  ),
+                  listview(),
+                  CommonButtonWidget(
+                    radius: twentyFour,
+                    top: widget.size.height * zero0024,
+                    width: widget.size.width * zero05,
+                    colorButton: Colors.white,
+                    colorText: Colors.black,
+                    colorBorder: Colors.black,
+                    text: 'change_account'.tr(),
+                  )
+                ],
               )
             ],
           ),
@@ -171,12 +182,18 @@ class BankSelectionComponentState extends State<BankSelectionComponent> {
                 title: CommonTextWidget(
                   fontWeight: FontWeight.w600,
                   fontSize: sixteen,
+                  textStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontSize: fourteen),
                   textColor: Colors.black,
                   text: widget.model.banks?[index].name,
                 ),
                 subtitle: CommonTextWidget(
-                  fontSize: sixteen,
-                  textColor: Colors.black,
+                  textStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontSize: twelve),
                   text: widget.model.banks?[index].accountNo,
                 ),
               ),

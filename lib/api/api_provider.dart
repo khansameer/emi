@@ -36,12 +36,6 @@ class ApiProvider {
       emiResult = A.toStringAsFixed(2);
       loadList.add(EMIBean(
           amount: emiResult, month: '${monthList[i]}', isSelected: false));
-      if (kDebugMode) {
-        print('==================${monthList[i]}');
-      }
-      if (kDebugMode) {
-        print('======_emiResult===${emiResult}');
-      }
     }
 
     return loadList;

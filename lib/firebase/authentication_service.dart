@@ -37,6 +37,10 @@ class AuthenticationService {
     return _status;
   }
 
+  getCurrentUserName() {
+    return auth.currentUser?.email;
+  }
+
   Future<AuthStatus> createAccount({
     required String email,
     required String password,
@@ -49,8 +53,6 @@ class AuthenticationService {
       );
 
       auth.currentUser!.updateDisplayName(name);
-      //_auth.currentUser!.updateProfile(displayName: username);
-
       newUser.user!.sendEmailVerification();
 
       _status = AuthStatus.successful;

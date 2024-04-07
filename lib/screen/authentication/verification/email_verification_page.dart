@@ -4,8 +4,8 @@ import 'package:emi_calculation/core/app_constants/app_constants.dart';
 import 'package:emi_calculation/core/common/common_button_widget.dart';
 import 'package:emi_calculation/core/common/common_component.dart';
 import 'package:emi_calculation/core/common/common_text_widget.dart';
-import 'package:emi_calculation/firebase/firebase_constants.dart';
-import 'package:emi_calculation/screen/dashboard/dashboard_screen.dart';
+import 'package:emi_calculation/core/route.dart';
+import 'package:emi_calculation/firebase/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +19,7 @@ class EmailVerificationScreen extends StatefulWidget {
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   bool isEmailVerified = false;
+  final _authService = AuthenticationService();
   Timer? timer;
   @override
   void initState() {
@@ -36,10 +37,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     });
 
     if (isEmailVerified) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardScreen()),
-          (route) => false);
+      if (!mounted) return;
+      Navigator.pushNamedAndRemoveUntil(
+          context, RouteName.dashboard, (route) => false);
 
       timer?.cancel();
     }
@@ -79,7 +79,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   textAlign: TextAlign.center,
                   top: size.height * 0.020,
                   text:
-                      '${'check_email_desc'.tr()}  ${auth.currentUser?.email}',
+                      '${'check_email_desc'.tr()}  ${_authService.getCurrentUserName()}',
                   textColor: Colors.white,
                 ),
                 SizedBox(

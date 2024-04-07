@@ -14,6 +14,7 @@ import 'package:emi_calculation/core/common/common_component.dart';
 import 'package:emi_calculation/core/common/common_text_widget.dart';
 import 'package:flutter/widgets.dart';
 
+//ignore: must_be_immutable
 class EmiSelectionComponent extends StatefulWidget {
   EmiSelectionComponent({
     super.key,
@@ -92,7 +93,7 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
               children: [
                 _isClick
                     ? Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,15 +102,29 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                SizedBox(
+                                  height: ten,
+                                ),
                                 CommonTextWidget(
-                                  fontWeight: FontWeight.w500,
-                                  textColor: Colors.grey,
+                                  left: ten,
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                   text: 'emi'.tr(),
                                 ),
                                 CommonTextWidget(
-                                  fontWeight: FontWeight.w600,
-                                  textColor: Colors.black,
-                                  fontSize: 16,
+                                  left: ten,
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                      ),
                                   text:
                                       '${double.parse(amount.toString()).round()}',
                                 )
@@ -117,14 +132,27 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
                             ),
                             Column(
                               children: [
+                                SizedBox(
+                                  height: ten,
+                                ),
                                 CommonTextWidget(
-                                  fontWeight: FontWeight.w500,
-                                  textColor: Colors.grey,
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontSize: fourteen,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                   text: 'duration'.tr(),
                                 ),
                                 CommonTextWidget(
-                                  fontWeight: FontWeight.w600,
-                                  textColor: Colors.black,
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontSize: fourteen,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                   text: '$month Month',
                                 )
                               ],
@@ -141,7 +169,7 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
                                     quarterTurns: 1,
                                     child: Icon(
                                       Icons.arrow_forward_ios_rounded,
-                                      size: 20,
+                                      size: twenty,
                                     ),
                                   ),
                                 )
@@ -157,9 +185,13 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonTextWidget(
-                              textColor: Colors.black,
-                              fontSize: eighteen,
-                              fontWeight: FontWeight.w600,
+                              textStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    fontSize: eighteen,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                               text: 'emi_title'.tr(),
                             ),
                             CommonTextWidget(
@@ -214,10 +246,10 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
       },
       child: Container(
         height: ninety,
-        decoration: const BoxDecoration(
-            color: colorButtons,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        decoration: boxDecoration(
+          topLeft: twenty,
+          topRight: twenty,
+        ),
         child: Center(
           child: CommonTextWidget(
             text: 'select_bank'.tr(),
@@ -314,15 +346,16 @@ class EmiSelectionComponentState extends State<EmiSelectionComponent> {
                   ),
                   index == 0
                       ? Positioned(
-                          right: 8,
-                          top: 0,
-                          left: 8,
+                          right: eight,
+                          top: zero,
+                          left: eight,
                           child: Container(
-                            margin: EdgeInsets.only(left: 20, right: 20),
-                            padding: EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(
+                                left: twenty, right: twenty),
+                            padding: const EdgeInsets.all(four),
                             decoration: BoxDecoration(
                                 color: colorApp,
-                                borderRadius: BorderRadius.circular(10)),
+                                borderRadius: BorderRadius.circular(ten)),
                             width: widget.size.width * zero04,
                             alignment: Alignment.center,
                             child: Center(

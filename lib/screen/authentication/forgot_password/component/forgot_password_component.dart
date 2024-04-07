@@ -1,8 +1,6 @@
 import 'package:emi_calculation/core/common/validator.dart';
 import 'package:emi_calculation/firebase/authentication_service.dart';
 import 'package:emi_calculation/firebase/firebase_exceptions.dart';
-import 'package:emi_calculation/screen/authentication/verification/verification_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:emi_calculation/screen/authentication/login/login_screen.dart';
@@ -102,6 +100,7 @@ class ForgotPasswordComponentState extends State<ForgotPasswordComponent> {
         setState(() {
           _isLoading = false;
         });
+        if (!mounted) return;
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -112,7 +111,7 @@ class ForgotPasswordComponentState extends State<ForgotPasswordComponent> {
           _isLoading = false;
         });
         final error = AuthExceptionHandler.generateErrorMessage(status);
-
+        if (!mounted) return;
         showMessageDialog(context: context, title: "error", content: error);
       }
     }

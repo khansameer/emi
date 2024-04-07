@@ -19,6 +19,7 @@ class CommonTextWidget extends StatelessWidget {
   double? _height;
   double? _width;
   double? _left;
+  TextStyle? _textStyles;
   double? _right;
   double? _lineHeight;
   double? _marginBottom;
@@ -49,6 +50,7 @@ class CommonTextWidget extends StatelessWidget {
       AlignmentGeometry? alignment,
       int? maxLines,
       bool? softWrap,
+      TextStyle? textStyle,
       TextDecorationStyle? decorationStyle,
       double? decorationThickness,
       Color? decorationColor,
@@ -76,6 +78,7 @@ class CommonTextWidget extends StatelessWidget {
     _decorationColor = decorationColor;
     _decorationThickness = decorationThickness;
     _decorationStyle = decorationStyle;
+    _textStyles = textStyle;
   }
 
   @override
@@ -96,18 +99,19 @@ class CommonTextWidget extends StatelessWidget {
         _text ?? "",
         maxLines: _maxLines,
         textAlign: _textAlign,
-        style: TextStyle(
-            shadows: _shadows,
-            decorationColor: _decorationColor,
-            decorationThickness: _decorationThickness,
-            decorationStyle: _decorationStyle,
-            height: _lineHeight ?? zero,
-            fontFamily: _fontFamily ?? fontPoppins,
-            letterSpacing: _letterSpacing ?? zero05,
-            fontSize: _fontSize,
-            color: _textColor ?? colorWhite,
-            fontWeight: _fontWeight,
-            decoration: _textDecoration),
+        style: _textStyles ??
+            TextStyle(
+                shadows: _shadows,
+                decorationColor: _decorationColor,
+                decorationThickness: _decorationThickness,
+                decorationStyle: _decorationStyle,
+                height: _lineHeight ?? zero,
+                fontFamily: _fontFamily ?? fontPoppins,
+                letterSpacing: _letterSpacing ?? zero05,
+                fontSize: _fontSize,
+                color: _textColor ?? colorWhite,
+                fontWeight: _fontWeight,
+                decoration: _textDecoration),
       ),
     );
   }

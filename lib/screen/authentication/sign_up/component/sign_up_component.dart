@@ -1,10 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:emi_calculation/core/common/validator.dart';
+import 'package:emi_calculation/core/route.dart';
 import 'package:emi_calculation/firebase/authentication_service.dart';
 import 'package:emi_calculation/firebase/firebase_exceptions.dart';
 import 'package:emi_calculation/screen/authentication/login/login_screen.dart';
-import 'package:emi_calculation/screen/authentication/sign_up/email_verification_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:emi_calculation/core/app_constants/app_constants.dart';
 import 'package:emi_calculation/core/color/color_utils.dart';
@@ -212,10 +211,8 @@ class SignUpComponentState extends State<SignUpComponent> {
         setState(() {
           _isLoading = false;
         });
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const EmailVerificationScreen()));
+        if (!mounted) return;
+        Navigator.pushNamed(context, RouteName.verification);
       } else {
         setState(() {
           _isLoading = false;

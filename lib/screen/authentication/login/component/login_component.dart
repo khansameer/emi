@@ -6,12 +6,10 @@ import 'package:emi_calculation/core/common/common_component.dart';
 import 'package:emi_calculation/core/common/common_text_widget.dart';
 import 'package:emi_calculation/core/common/validator.dart';
 import 'package:emi_calculation/core/preference_helper.dart';
-import 'package:emi_calculation/core/string_utils/string_utils.dart';
+import 'package:emi_calculation/core/route.dart';
 import 'package:emi_calculation/firebase/authentication_service.dart';
 import 'package:emi_calculation/firebase/firebase_exceptions.dart';
-import 'package:emi_calculation/screen/authentication/forgot_password/forgot_password_screen.dart';
-import 'package:emi_calculation/screen/authentication/sign_up/sign_up_screen.dart';
-import 'package:emi_calculation/screen/dashboard/dashboard_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginComponent extends StatefulWidget {
@@ -148,13 +146,11 @@ class LoginComponentState extends State<LoginComponent> {
   }
 
   onClickSignup() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
+    Navigator.pushNamed(context, RouteName.signUp);
   }
 
   onClickForgot() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()));
+    Navigator.pushNamed(context, RouteName.forgotPassword);
   }
 
   onClickLogin() async {
@@ -173,20 +169,23 @@ class LoginComponentState extends State<LoginComponent> {
         });
 
         PreferenceHelper.setBool(key: PreferenceHelper.isLOGIN, value: true);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const DashboardScreen()));
+        if (!mounted) return;
+        Navigator.pushNamedAndRemoveUntil(
+            context, RouteName.dashboard, (route) => false);
       } else {
         setState(() {
           _isLoading = false;
         });
 
         if (status == AuthStatus.unknown) {
+          if (!mounted) return;
           showMessageDialog(
               context: context,
               title: 'error'.tr(),
               content: 'email_verify_msg'.tr());
         } else {
           final error = AuthExceptionHandler.generateErrorMessage(status);
+          if (!mounted) return;
           showMessageDialog(
               context: context, title: 'error'.tr(), content: error);
         }

@@ -4,13 +4,13 @@ import 'package:emi_calculation/core/color/color_utils.dart';
 import 'package:emi_calculation/core/common/common_component.dart';
 import 'package:emi_calculation/core/common/common_text_widget.dart';
 import 'package:emi_calculation/core/string_utils/string_utils.dart';
-import 'package:emi_calculation/screen/dashboard/component/bank_selection_component.dart';
 import 'package:emi_calculation/screen/dashboard/component/emi_selection_component.dart';
-import 'package:emi_calculation/screen/dashboard/component/kyc_component.dart';
+
 import 'package:emi_calculation/screen/dashboard/model/emi_model.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
+//ignore: must_be_immutable
 class StepOneComponent extends StatefulWidget {
   StepOneComponent({
     super.key,
@@ -63,10 +63,7 @@ class StepOneViewState extends State<StepOneComponent> {
         },
         child: Container(
           height: ninety,
-          decoration: const BoxDecoration(
-              color: colorButtons,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+          decoration: boxDecoration(topLeft: twenty, topRight: twenty),
           child: Center(
             child: CommonTextWidget(
               text: 'emi_selection'.tr(),
@@ -77,7 +74,7 @@ class StepOneViewState extends State<StepOneComponent> {
         ),
       ),
       body: Card(
-        elevation: 0,
+        elevation: zero,
         color: Colors.transparent,
         child: Container(
           color: Colors.transparent,
@@ -100,15 +97,13 @@ class StepOneViewState extends State<StepOneComponent> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          icon: commonIcon(
-                            icon: Icons.close,
-                            color: Colors.black,
+                          icon: const Icon(
+                            Icons.close,
                           )),
                       IconButton(
                           onPressed: () {},
                           icon: const Icon(
                             Icons.question_mark,
-                            color: Colors.black,
                           ))
                     ],
                   ),
@@ -117,42 +112,61 @@ class StepOneViewState extends State<StepOneComponent> {
                     child: Column(
                       children: [
                         _isClick
-                            ? ListTile(
-                                title: CommonTextWidget(
-                                  fontWeight: FontWeight.w500,
-                                  textColor: Colors.grey,
-                                  text: 'credit_amount'.tr(),
-                                ),
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    setState(() {});
-                                    _isClick = false;
-                                    Navigator.of(context).pop();
-                                  },
-                                  icon: const RotatedBox(
-                                    quarterTurns: 1,
-                                    child: Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      size: 20,
-                                    ),
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CommonTextWidget(
+                                        fontWeight: FontWeight.w500,
+                                        textColor: Colors.grey,
+                                        text: 'credit_amount'.tr(),
+                                      ),
+                                      CommonTextWidget(
+                                        top: five,
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                        text:
+                                            '$rupee ${_volumeValue.ceil().toString()}',
+                                      )
+                                    ],
                                   ),
-                                ),
-                                subtitle: CommonTextWidget(
-                                  top: five,
-                                  fontWeight: FontWeight.w800,
-                                  textColor: Colors.black,
-                                  text:
-                                      '$rupee ${_volumeValue.ceil().toString()}',
-                                ),
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {});
+                                      _isClick = false;
+                                      Navigator.of(context).pop();
+                                    },
+                                    icon: const RotatedBox(
+                                      quarterTurns: 1,
+                                      child: Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        size: twenty,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               )
                             : Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CommonTextWidget(
-                                    textColor: Colors.black,
-                                    fontSize: eighteen,
-                                    fontWeight: FontWeight.w600,
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: eighteen,
+                                        ),
                                     text: '${widget.model.name},'
                                         '${'how_much'.tr()}',
                                   ),
@@ -198,14 +212,18 @@ class StepOneViewState extends State<StepOneComponent> {
                                             ),
                                             CommonTextWidget(
                                               top: five,
-                                              fontWeight: FontWeight.w800,
-                                              textColor: Colors.black,
+                                              textStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w800),
                                               text:
                                                   '$rupee ${_volumeValue.ceil().toString()}',
                                             ),
                                             CommonTextWidget(
                                               top: five,
-                                              fontSize: 12,
+                                              fontSize: twelve,
                                               fontWeight: FontWeight.w500,
                                               textColor: Colors.green,
                                               text:
@@ -218,11 +236,11 @@ class StepOneViewState extends State<StepOneComponent> {
                                 axisLineStyle: const AxisLineStyle(
                                     cornerStyle: CornerStyle.bothFlat,
                                     color: colorProgress,
-                                    thickness: 20),
+                                    thickness: twenty),
                                 pointers: <GaugePointer>[
                                   RangePointer(
                                     value: _volumeValue,
-                                    width: 20,
+                                    width: twenty,
                                     animationDuration: 2000,
                                     animationType: AnimationType.slowMiddle,
                                     cornerStyle: CornerStyle.bothCurve,
@@ -233,8 +251,8 @@ class StepOneViewState extends State<StepOneComponent> {
                                       value: _volumeValue,
                                       enableDragging: true,
                                       onValueChanged: onVolumeChanged,
-                                      markerHeight: 15,
-                                      markerWidth: 15,
+                                      markerHeight: fifteen,
+                                      markerWidth: fifteen,
                                       markerType: MarkerType.circle,
                                       color: Colors.white,
                                       borderWidth: 2,

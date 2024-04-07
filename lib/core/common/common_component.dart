@@ -114,17 +114,11 @@ Widget commonInkWell({
 }
 
 Widget commonIcon({IconData? icon, Color? color, double? size}) {
-  print('==========gett${getTheme()}');
   return Icon(
     icon ?? Icons.visibility,
     color: _getTheme == true ? Colors.black : Colors.white,
     size: size ?? twenty,
   );
-}
-
-Future<bool> getTheme() async {
-  _getTheme = await PreferenceHelper.getBool(key: PreferenceHelper.isTheme);
-  return _getTheme;
 }
 
 Widget commonBgView(
@@ -218,11 +212,11 @@ void showModalBottomSheetDialog(
     Color? backgroundColor}) {
   showModalBottomSheet<void>(
     context: context,
-    elevation: 10,
+    elevation: ten,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topRight: Radius.circular(40),
-        topLeft: Radius.circular(40),
+        topRight: Radius.circular(forty),
+        topLeft: Radius.circular(forty),
       ),
     ),
     // backgroundColor: Colors.white,
@@ -236,8 +230,43 @@ void showModalBottomSheetDialog(
     builder: (BuildContext context) {
       return widget ?? Container();
     },
-  ).then((value) {
+  ).whenComplete(() {
     onClose(false);
     print('========Close');
   });
+}
+
+PopupMenuItem buildPopupMenuItem({String? title, String? icon, String? value}) {
+  return PopupMenuItem(
+    value: value ?? "hindi",
+    child: Row(
+      children: [
+        commonSetAssetImage(
+            color: Colors.black,
+            image: icon ?? icHindi,
+            width: thirty,
+            height: thirty),
+        CommonTextWidget(
+          left: twenty,
+          text: title ?? "Hindi",
+          textColor: Colors.black,
+        ),
+      ],
+    ),
+  );
+}
+
+boxDecoration(
+    {double? topLeft,
+    double? topRight,
+    double? bottomLeft,
+    double? bottomRight,
+    Color? colorBox}) {
+  return BoxDecoration(
+      color: colorBox ?? colorButtons,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(topLeft ?? 0),
+          bottomLeft: Radius.circular(bottomLeft ?? 0),
+          bottomRight: Radius.circular(bottomRight ?? 0),
+          topRight: Radius.circular(topRight ?? 0)));
 }

@@ -4,10 +4,9 @@ import 'package:emi_calculation/core/app_constants/app_constants.dart';
 import 'package:emi_calculation/core/color/color_utils.dart';
 import 'package:emi_calculation/core/common/common_component.dart';
 import 'package:emi_calculation/core/common/common_text_widget.dart';
-import 'package:emi_calculation/core/common/common_textfield.dart';
 import 'package:emi_calculation/core/image_path/image_path.dart';
 import 'package:emi_calculation/core/preference_helper.dart';
-import 'package:emi_calculation/screen/authentication/login/login_screen.dart';
+import 'package:emi_calculation/core/route.dart';
 import 'package:emi_calculation/screen/dashboard/bloc/dashboard_event.dart';
 import 'package:emi_calculation/screen/dashboard/bloc/dashboard_state.dart';
 import 'package:emi_calculation/screen/dashboard/bloc/emi_bloc.dart';
@@ -33,27 +32,6 @@ class DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     emiBloc.add(GetEMIList());
     super.initState();
-  }
-
-  PopupMenuItem buildPopupMenuItem(
-      {String? title, String? icon, String? value}) {
-    return PopupMenuItem(
-      value: value ?? "hindi",
-      child: Row(
-        children: [
-          commonSetAssetImage(
-              color: Colors.black,
-              image: icon ?? icHindi,
-              width: thirty,
-              height: thirty),
-          CommonTextWidget(
-            left: twenty,
-            text: title ?? "Hindi",
-            textColor: Colors.black,
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -88,7 +66,6 @@ class DashboardScreenState extends State<DashboardScreen> {
           ),
           PopupMenuButton(
             onSelected: (value) {
-              print('======$value');
               if (value == "hindi") {
                 context.setLocale(const Locale('hi'));
                 saveLanguage(language: "hindi");
@@ -113,10 +90,9 @@ class DashboardScreenState extends State<DashboardScreen> {
             onTap: () async {
               await FirebaseAuth.instance.signOut();
               await PreferenceHelper.clear();
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  (route) => false);
+
+              Navigator.pushNamedAndRemoveUntil(
+                  context, RouteName.login, (route) => false);
             },
             child: commonSetAssetImage(
                 image: icLogOut, width: thirty, height: thirty),
@@ -135,9 +111,9 @@ class DashboardScreenState extends State<DashboardScreen> {
               }, child: BlocBuilder<EMIBloc, EMIState>(
                 builder: (BuildContext context, state) {
                   if (state is EMIInitial) {
-                    return _buildLoading();
+                    return showLoaderList();
                   } else if (state is EMILoading) {
-                    return _buildLoading();
+                    return showLoaderList();
                   } else if (state is EMILoaded) {
                     emiModel = state.emiModel;
                     return commonView(size: size, model: state.emiModel);
@@ -147,8 +123,6 @@ class DashboardScreenState extends State<DashboardScreen> {
               ))),
         ));
   }
-
-  Widget _buildLoading() => const Center(child: CircularProgressIndicator());
 
   commonView({required Size size, required EMIModel model}) {
     return Column(
@@ -170,11 +144,7 @@ class DashboardScreenState extends State<DashboardScreen> {
             },
             child: Container(
               height: ninety,
-              decoration: const BoxDecoration(
-                  color: colorButtons,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
+              decoration: boxDecoration(topLeft: twenty, topRight: twenty),
               child: Center(
                 child: CommonTextWidget(
                   text: 'apply_loan'.tr(),

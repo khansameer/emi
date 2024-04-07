@@ -1,6 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:emi_calculation/core/preference_helper.dart';
+import 'package:emi_calculation/core/route.dart';
+import 'package:emi_calculation/core/route_generator.dart';
 import 'package:emi_calculation/core/string_utils/string_utils.dart';
 import 'package:emi_calculation/firebase/firebase_options.dart';
 import 'package:emi_calculation/screen/splash/splash_screen.dart';
@@ -41,11 +43,30 @@ class MyApp extends StatelessWidget {
     return AdaptiveTheme(
       light: ThemeData(
         useMaterial3: true,
+        textTheme: TextTheme(
+          bodyMedium: TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+              fontFamily: fontPoppins,
+              fontWeight: FontWeight.w600),
+        ),
         brightness: Brightness.light,
+        iconTheme: const IconThemeData(color: Colors.black),
         colorSchemeSeed: Colors.blue,
       ),
       dark: ThemeData(
+        textTheme: TextTheme(
+          bodyMedium: TextStyle(
+              fontSize: 14,
+              color: Colors.white,
+              fontFamily: fontPoppins,
+              fontWeight: FontWeight.w600),
+        ),
         useMaterial3: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+        listTileTheme: const ListTileThemeData(
+          iconColor: Colors.white,
+        ),
         brightness: Brightness.dark,
         colorSchemeSeed: Colors.blue,
       ),
@@ -54,12 +75,13 @@ class MyApp extends StatelessWidget {
       builder: (theme, darkTheme) => MaterialApp(
         title: appName,
         theme: theme,
+        initialRoute: RouteName.splashScreen,
+        onGenerateRoute: RouteGenerator.generateRoute,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         darkTheme: darkTheme,
-        home: const SplashScreen(),
       ),
     );
   }

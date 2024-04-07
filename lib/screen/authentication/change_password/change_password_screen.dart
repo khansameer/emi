@@ -1,4 +1,3 @@
-import 'package:emi_calculation/core/color/color_utils.dart';
 import 'package:emi_calculation/core/common/common_component.dart';
 import 'package:flutter/material.dart';
 

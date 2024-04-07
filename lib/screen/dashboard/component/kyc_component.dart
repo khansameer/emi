@@ -2,14 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:emi_calculation/core/app_constants/app_constants.dart';
 import 'package:emi_calculation/core/color/color_utils.dart';
 import 'package:emi_calculation/core/common/common_button_widget.dart';
-import 'package:emi_calculation/core/common/common_component.dart';
 import 'package:emi_calculation/core/common/common_text_widget.dart';
 import 'package:emi_calculation/core/image_path/image_path.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 
+import 'package:flutter/material.dart';
+
+//ignore: must_be_immutable
 class KycComponent extends StatefulWidget {
   KycComponent(
       {super.key, required this.size, this.onTap, required this.function});
@@ -18,7 +16,6 @@ class KycComponent extends StatefulWidget {
   Function function;
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return KycComponentState();
   }
 }
@@ -50,6 +47,10 @@ class KycComponentState extends State<KycComponent> {
                       textColor: Colors.black,
                       left: ten,
                       fontSize: eighteen,
+                      textStyle:
+                          Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                fontSize: sixteen,
+                              ),
                       fontWeight: FontWeight.w600,
                       text: 'kyc_completed'.tr(),
                     ),
@@ -67,8 +68,8 @@ class KycComponentState extends State<KycComponent> {
                       alignment: Alignment.center,
                       child: Image.asset(
                         icDone,
-                        width: 130,
-                        height: 130,
+                        width: oneHundred,
+                        height: oneHundred,
                       ),
                     ),
                     Align(
