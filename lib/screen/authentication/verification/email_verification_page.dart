@@ -79,7 +79,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   textAlign: TextAlign.center,
                   top: size.height * 0.020,
                   text:
-                      '${'check_email_desc'.tr()}  ${_authService.getCurrentUserName()}',
+                      '${'check_email_desc'.tr()} ${_authService.getCurrentUserName()}',
                   textColor: Colors.white,
                 ),
                 SizedBox(

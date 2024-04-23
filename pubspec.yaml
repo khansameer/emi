@@ -43,13 +43,15 @@ dependencies:
   firebase_auth: ^4.19.0
   equatable: ^2.0.5
   firebase_core: ^2.28.0
-  hydrated_bloc: ^9.1.5
   path_provider: ^2.1.2
   adaptive_theme: ^3.6.0
-
+  flutter_launcher_icons: ^0.13.1
 dev_dependencies:
+  flutter_launcher_icons: "^0.13.1"
+
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -57,6 +59,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/ic_app_logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
